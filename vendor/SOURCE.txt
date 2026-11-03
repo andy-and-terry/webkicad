@@ -1,0 +1,4 @@
+Vendored from https://gitlab.com/kicad/libraries
+kicad-footprints @ a0dcd398e7ea4b00cdeb91efc35f09cceaa9097d
+kicad-symbols    @ 45efbd93be87e365a21d743daf9b8a07e6414df6
+Subset only; see LICENSE.md in each folder (CC-BY-SA 4.0 with design exception).
