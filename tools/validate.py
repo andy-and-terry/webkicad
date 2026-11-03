@@ -141,8 +141,10 @@ def check_footprint(path):
     if not p1:
         errs.append("no pad 1")
     else:
-        others = {str(p[2]) + str(p[3]) for p in pads if str(p[1]) != "1"}
-        distinct = (str(p1[0][2]) + str(p1[0][3])) not in others
+        # distinct = pad 1 shape differs from every other pad of the same size
+        sz = lambda p: tuple(find(p, "size")[1:3])  # noqa: E731
+        same_size = [p for p in pads if str(p[1]) != "1" and sz(p) == sz(p1[0])]
+        distinct = all(str(p[3]) != str(p1[0][3]) for p in same_size)
         silk = list(graphic_segments(fp, "F.SilkS"))
         r1 = pad_rect(p1[0])
         marked = distinct
