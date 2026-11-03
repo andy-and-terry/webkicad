@@ -8,9 +8,10 @@ Package_QFP, Package_DFN_QFN, Package_DIP, Resistor_SMD, Capacitor_SMD,
 Inductor_SMD, LED_SMD, Diode_SMD, Connector_JST, Connector_PinHeader_*,
 Connector_PinSocket_*).
 
+Chip R/C/L/LED footprints: decided to use the vendored official KiCad
+Resistor_SMD / Capacitor_SMD / Inductor_SMD / LED_SMD libraries (not generated).
+
 ## Need a datasheet (send the PDF or the dimension table)
-- Chip R/C/L/LED land patterns 0201, 0402, 0603, 0805, 1206, 1210
-  (Yageo RC series or Vishay CRCW datasheet "recommended land pattern" page).
 - Right-angle pin headers and sockets, 2.54 / 1.27 mm (vendor drawing).
 - JST-PH (S/B..B-PH-K) and JST-XH (B..B-XH-A) — JST drawings.
 

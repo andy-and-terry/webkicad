@@ -1,6 +1,6 @@
 // Wrap a library symbol / footprint into a minimal .kicad_sch / .kicad_pcb so
 // KiCanvas (which only renders schematics and boards) can preview it.
-import { parse, dumps, find, findAll, str, q, L, deepClone, Q } from "./sexpr.js";
+import { parse, dumps, find, findAll, str, num, q, L, deepClone, Q } from "./sexpr.js";
 
 export function uuid() {
   if (globalThis.crypto?.randomUUID) return crypto.randomUUID();
@@ -57,10 +57,20 @@ export function symbolToSch(sym, libName) {
   const props = Object.fromEntries(findAll(sym, "property").map((p) => [str(p[1]), str(p[2])]));
   const root = uuid();
   const units = unitCount(sym);
-  const insts = [];
+  const insts = [], ncs = [];
+  const isPower = !!find(sym, "power");
+  const ref = isPower ? "#PWR01" : (props.Reference || "U").replace(/\?$/, "") + "1";
   for (let u = 1; u <= units; u++) {
     const x = 50.8 + (u - 1) * 50.8, y = 76.2, id = uuid();
-    const ref = (props.Reference || "U") + "?";
+    // previews are stand-alone: flag every pin as intentionally unconnected (body style 1 only)
+    for (const sub of findAll(sym, "symbol")) {
+      const [su, st] = str(sub[1]).split("_").slice(-2).map(Number);
+      if ((su !== 0 && su !== u) || st > 1) continue;
+      for (const pin of findAll(sub, "pin")) {
+        const at = find(pin, "at");
+        ncs.push(L("no_connect", L("at", +(x + num(at[1])).toFixed(4), +(y - num(at[2])).toFixed(4)), L("uuid", q(uuid()))));
+      }
+    }
     insts.push(L("symbol", L("lib_id", q(libId)), L("at", x, y, 0), L("unit", u),
       L("exclude_from_sim", "no"), L("in_bom", "yes"), L("on_board", "yes"), L("dnp", "no"), L("uuid", q(id)),
       prop("Reference", ref, x, y - 12.7, false), prop("Value", props.Value || name, x, y + 12.7, false),
@@ -68,7 +78,7 @@ export function symbolToSch(sym, libName) {
       L("instances", L("project", q("preview"), L("path", q("/" + root), L("reference", q(ref)), L("unit", u))))));
   }
   const t = L("kicad_sch", L("version", "20231120"), L("generator", q("eeschema")), L("generator_version", q("8.0")),
-    L("uuid", q(root)), L("paper", q("A4")), L("lib_symbols", libSym), ...insts,
+    L("uuid", q(root)), L("paper", q("A4")), L("lib_symbols", libSym), ...ncs, ...insts,
     L("sheet_instances", L("path", q("/"), L("page", q("1")))));
   return dumps(t) + "\n";
 }
