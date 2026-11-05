@@ -1,5 +1,6 @@
 // Wrap a library symbol / footprint into a minimal .kicad_sch / .kicad_pcb so
 // KiCanvas (which only renders schematics and boards) can preview it.
+import { symbolForKicad8 } from "./downconvert.js";
 import { parse, dumps, find, findAll, str, num, q, L, deepClone, Q } from "./sexpr.js";
 
 export function uuid() {
@@ -52,7 +53,8 @@ const prop = (k, v, x, y, hide) =>
 export function symbolToSch(sym, libName) {
   const name = str(sym[1]);
   const libId = `${libName}:${name}`;
-  const libSym = deepClone(sym);
+  // schematic is KiCad 8 format, so embed a KiCad 8 version of the symbol
+  const libSym = symbolForKicad8(sym).symbol;
   libSym[1] = q(libId);
   const props = Object.fromEntries(findAll(sym, "property").map((p) => [str(p[1]), str(p[2])]));
   const root = uuid();

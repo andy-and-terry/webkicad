@@ -27,7 +27,7 @@ jobs:
       - name: Python tests
         run: python -m pytest -q
       - name: JS parser round-trip tests
-        run: node --test tests/js/sexpr.test.mjs
+        run: node --test tests/js/sexpr.test.mjs tests/js/downconvert.test.mjs
       - name: Assemble site
         run: |
           mkdir -p _site

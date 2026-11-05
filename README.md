@@ -96,6 +96,6 @@ Rule: pinouts and land patterns come **only** from the datasheet you provide, ne
 
 - The app views and organises files; editing is limited to the schematic editor (v2, in progress). There is no PCB editing or routing.
 - KiCanvas only renders `.kicad_sch` / `.kicad_pcb`, so library previews are wrapped into a temporary schematic or board.
-- Vendored official symbols are KiCad 10 format (`.kicad_symdir`). The generated ones are KiCad 8 format.
+- Vendored official symbols are KiCad 10 format (`.kicad_symdir`). The generated ones are KiCad 8 format. When a vendored symbol is put into a schematic (previews now, the editor later), `js/downconvert.js` converts it to KiCad 8 syntax: `(hide yes)` becomes a bare `hide`, and KiCad 10-only fields (`show_name`, `do_not_autoplace`, `in_pos_files`, `embedded_fonts`, `duplicate_pin_numbers_are_jumpers`) are dropped. Anything else it doesn't recognise is rejected rather than guessed. The 8 `(show_name yes)` fields lose their visible field name.
 - Chip land patterns, IC packages, right-angle headers and JST footprints are not generated yet; they are waiting on cited sources (`TODO.md`). Use the vendored official footprints meanwhile.
 - val.town blob storage is text-only in this app; binary files in uploaded zips are skipped.
