@@ -33,6 +33,33 @@ All requests need `Authorization: Bearer <KICAD_KEY>`. Keys are stored under the
 
 A project is the prefix `proj/<name>/`.
 
+## Schematic editor
+
+To start editing:
+- Open a `.kicad_sch` in a project and tap **✎ Edit schematic**, or
+- Use **+ Schematic** on a project to create a new one.
+
+Tools (toolbar buttons, or keys in brackets):
+
+| Tool | How to use it |
+|---|---|
+| Select (Esc) | Tap to select, drag to move. Dragging empty space pans; pinch or the mouse wheel zooms. |
+| Wire (W) | Tap points; segments are orthogonal. Double-tap, Enter or **Finish wire** to end. Junctions are added automatically at T-joins. |
+| Net label (L) | Tap to place. |
+| Global label (G) | Tap to place. |
+| Power (P) | Pick GND, +3V3, +5V, +12V, VCC or PWR_FLAG, then tap to place. |
+| Junction (J) | Tap to place. |
+| No-connect (Q) | Tap to place. |
+| + Symbol (A) | Search the whole library, then tap to place. |
+
+Editing commands:
+- Rotate (R), mirror (X / Y), delete (Del), undo (Ctrl+Z), redo (Ctrl+Y), save (Ctrl+S).
+- The properties panel edits Reference, Value, Footprint, Datasheet, the unit of multi-unit parts, and label text.
+
+Everything snaps to the 1.27 mm grid. New items get random v4 UUIDs, and new schematics follow the KiCad 8 layout (`lib_symbols`, `instances`, `sheet_instances`).
+
+Unedited parts of a file are written back byte for byte. The tests check this on real KiCad files in `tests/fixtures/sch`.
+
 ## Libraries
 
 | Folder | What |
@@ -171,7 +198,8 @@ Rule: pinouts and land patterns come **only** from the datasheet you provide, ne
 
 ## Limitations
 
-- The app views and organises files; editing is limited to the schematic editor (v2, in progress). There is no PCB editing or routing.
+- Editing covers schematics only; there is no PCB editing or routing (boards are view-only via KiCanvas). The editor has no buses, hierarchical sheets, bulk annotation or ERC of its own: run `python tools/erc.py` on saved files.
+- The editor writes KiCad 8 format (version 20231120) for new schematics. When it edits a newer file (for example KiCad 9), it keeps that file's version header, and the symbols it inserts use KiCad 8 syntax. This is not yet verified in KiCad 9.
 - KiCanvas only renders `.kicad_sch` / `.kicad_pcb`, so library previews are wrapped into a temporary schematic or board.
 - Vendored official symbols are KiCad 10 format (`.kicad_symdir`). The generated ones are KiCad 8 format. When a vendored symbol is put into a schematic (previews now, the editor later), `js/downconvert.js` converts it to KiCad 8 syntax: `(hide yes)` becomes a bare `hide`, and KiCad 10-only fields (`show_name`, `do_not_autoplace`, `in_pos_files`, `embedded_fonts`, `duplicate_pin_numbers_are_jumpers`) are dropped. Anything else it doesn't recognise is rejected rather than guessed. The 8 `(show_name yes)` fields lose their visible field name.
 - Chip land patterns, IC packages, right-angle headers and JST footprints are not generated yet; they are waiting on cited sources (`TODO.md`). Use the vendored official footprints meanwhile.

@@ -1,5 +1,7 @@
 import { api, settings, ApiError } from "./api.js";
 import { extractSymbol, symbolToSch, footprintToPcb } from "./preview.js";
+import { Editor } from "./editor.js";
+import { Schematic } from "./schematic.js";
 
 // ---------- config ----------
 export const GH = {
@@ -151,6 +153,7 @@ function projectCard(p) {
   const det = h("details", { class: "project", open: openState.has(p.name ?? "") });
   det.addEventListener("toggle", () => (det.open ? openState.add(p.name ?? "") : openState.delete(p.name ?? "")));
   const actions = p.name ? h("div", { class: "actions" },
+    h("button", { onclick: () => newSchematic(p) }, "+ Schematic"),
     h("button", { onclick: () => uploadTo(p.name), title: "Upload files or .zip" }, "Upload"),
     h("button", { onclick: () => downloadZip(p) }, "Zip"),
     h("button", { onclick: () => renameProject(p) }, "Rename"),
@@ -176,9 +179,7 @@ async function openFile(name) {
   try {
     const text = await busy(`Loading ${name}`, () => api.get(name));
     const info = [];
-    if (/\.kicad_sch$/i.test(name) && window.KiCadEditor) {
-      info.push(h("button", { onclick: () => window.KiCadEditor.open(name, text) }, "Edit schematic"));
-    }
+    if (/\.kicad_sch$/i.test(name)) info.push(h("button", { class: "primary", onclick: () => openEditor(name, text) }, "✎ Edit schematic"));
     view(name, text, info);
   } catch (e) { fail(e, `Opening ${name}`); }
 }
@@ -397,6 +398,49 @@ async function previewLib(e) {
     }
   } catch (err) { notify(`Preview failed: ${err.message}`, "error"); }
 }
+
+// ---------- schematic editor ----------
+let editor = null;
+async function libSymbolFor(e) {
+  const entry = e.path ? e : byKey.get(`sym:${e.lib}:${e.name}`);
+  if (!entry) throw new Error(`${e.lib}:${e.name} not in index.json`);
+  const text = await fetchText(entry.path);
+  const parent = entry.ext ? await fetchText(entry.path.replace(/[^/]+$/, `${entry.ext}.kicad_sym`)) : null;
+  return extractSymbol(text, entry.name, parent);
+}
+function searchSymbols(qs, limit) {
+  if (!index) return [];
+  const terms = qs.toLowerCase().split(/\s+/).filter(Boolean);
+  const out = [];
+  for (const e of index) {
+    if (e.t !== "sym" || !terms.every((t) => e.hay.includes(t))) continue;
+    out.push(e);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+export function openEditor(name, text) {
+  editor = new Editor({ host: $("#pane-editor"), api, notify, loadSymbol: libSymbolFor, searchSymbols,
+    onClose: () => { $("#tab-editor").hidden = true; editor = null; showPane("viewer"); loadProjects(); } });
+  try { editor.open(name, text); } catch (e) { notify(`Cannot edit ${name}: ${e.message}`, "error"); return; }
+  $("#tab-editor").hidden = false;
+  showPane("editor");
+}
+async function newSchematic(p) {
+  const existing = new Set(p.files.map((f) => f.name));
+  let base = `${PROJ}${p.name}/${p.name}.kicad_sch`;
+  if (existing.has(base)) {
+    const n = prompt("New schematic file name (without extension):", `${p.name}-2`);
+    if (!n) return;
+    if (!NAME_RE.test(n)) { notify("Use letters, digits, _ . - (max 64 chars).", "error"); return; }
+    base = `${PROJ}${p.name}/${n}.kicad_sch`;
+    if (existing.has(base)) { notify(`${n}.kicad_sch already exists`, "error"); return; }
+  }
+  const text = Schematic.empty(p.name).text();
+  try { await busy("Creating", () => api.put(base, text)); loadProjects(); openEditor(base, text); }
+  catch (e) { fail(e, "Creating schematic"); }
+}
+window.addEventListener("beforeunload", (e) => { if (editor?.dirty) { e.preventDefault(); e.returnValue = ""; } });
 
 // ---------- layout (phone tabs) ----------
 function showPane(name) {

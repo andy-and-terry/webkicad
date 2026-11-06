@@ -26,8 +26,12 @@ jobs:
         run: python tools/build_all.py
       - name: Python tests
         run: python -m pytest -q
-      - name: JS parser round-trip tests
-        run: node --test tests/js/sexpr.test.mjs tests/js/downconvert.test.mjs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: JS tests (parser round trip, down-conversion, schematic model + ERC)
+        run: node --test tests/js/sexpr.test.mjs tests/js/downconvert.test.mjs tests/js/schematic.test.mjs
       - name: Assemble site
         run: |
           mkdir -p _site

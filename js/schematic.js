@@ -239,6 +239,18 @@ export class Schematic {
     for (const p of kids(inst, "project")) { touch(p); for (const pa of kids(p, "path")) touch(pa); }
   }
 
+  setUnit(sym, unit) {
+    const lib = this.libSymbol(str(find(sym, "lib_id")[1]));
+    const un = find(sym, "unit");
+    un[1] = String(unit); touch(un);
+    const path = this._instancePath(sym);
+    if (path && find(path, "unit")) { find(path, "unit")[1] = String(unit); touch(find(path, "unit")); this._touchInstances(sym); }
+    for (const p of kids(sym, "pin")) sym.splice(sym.indexOf(p), 1);
+    const at = sym.indexOf(find(sym, "instances"));
+    sym.splice(at < 0 ? sym.length : at, 0, ...this._libPinNumbers(lib, unit).map((n) => L("pin", q(n), L("uuid", q(uuid())))));
+    touch(sym, this.root);
+  }
+
   setLabelText(label, text) { label[1] = q(text); touch(label, this.root); }
 
   // ---------- wires, junctions, labels ----------
