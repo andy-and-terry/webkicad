@@ -1,0 +1,310 @@
+(footprint "PinSocket_2x05_P2.54mm_Vertical"
+	(version 20240108)
+	(generator "webkicad_gen")
+	(generator_version "1.0")
+	(layer "F.Cu")
+	(descr "Through hole straight socket strip, 2x05, 2.54mm pitch, double row")
+	(tags "Through hole socket strip THT 2x05 2.54mm double row")
+	(property "Reference" "REF**"
+		(at 0 -2.88 0)
+		(layer "F.SilkS")
+		(uuid "6b69d979-c0df-52d6-8912-e07c206b85bd")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "PinSocket_2x05_P2.54mm_Vertical"
+		(at 0 12.93 0)
+		(layer "F.Fab")
+		(uuid "90f712e9-a066-574b-82ae-397be6cec06d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "978ead6a-8461-5d56-bfc4-ec159f2af100")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3124fa38-52d2-5c9f-b8fb-68cdd1afdc10")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Through hole straight socket strip, 2x05, 2.54mm pitch, double row"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "bf12bced-9946-5145-b442-61ae2458c264")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Source" "Dimensions from KiCad official library Connector_PinSocket_2.54mm/PinSocket_1x03_P2.54mm_Vertical, PinSocket_2x03_P2.54mm_Vertical (kicad-footprints a0dcd398e7ea)"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3175397e-9c8e-5977-b41e-82b53609ff3d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "94116af1-5061-574d-b5d7-abda01f1b438")
+	)
+	(pad "2" thru_hole circle
+		(at -2.54 0)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "a3ecb6c2-97b4-5529-a47b-3ddff316cac3")
+	)
+	(pad "3" thru_hole circle
+		(at 0 2.54)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "7a5db958-2d8c-5fce-857a-4e9b24246ca2")
+	)
+	(pad "4" thru_hole circle
+		(at -2.54 2.54)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "66f9ef3d-1bf0-5e46-84e5-d65679a4c4ce")
+	)
+	(pad "5" thru_hole circle
+		(at 0 5.08)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "b0191449-ca3c-5cac-9197-0fde5b1b0eb5")
+	)
+	(pad "6" thru_hole circle
+		(at -2.54 5.08)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "b1c1df29-5cc5-5949-bbfc-72148d887ea4")
+	)
+	(pad "7" thru_hole circle
+		(at 0 7.62)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "291b9dc5-1666-51d7-a289-229ce4c702b0")
+	)
+	(pad "8" thru_hole circle
+		(at -2.54 7.62)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "3caca79d-d457-5844-91e9-e5cfa7902b30")
+	)
+	(pad "9" thru_hole circle
+		(at 0 10.16)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "87683747-2ff6-5034-962b-7e39f3a413b5")
+	)
+	(pad "10" thru_hole circle
+		(at -2.54 10.16)
+		(size 1.7 1.7)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(uuid "cd0fb8b5-2b8e-5e42-a148-c84a2ef985a7")
+	)
+	(fp_line
+		(start -3.81 -1.27)
+		(end 0.64 -1.27)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "e8087b38-4175-5a04-87b0-150c04c71607")
+	)
+	(fp_line
+		(start 0.64 -1.27)
+		(end 1.27 -0.63)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "30c3d06b-06bc-5b3f-8209-93eb73ce60dc")
+	)
+	(fp_line
+		(start 1.27 -0.63)
+		(end 1.27 11.43)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "ace713fc-74a0-5c41-b23f-3bec6e4baaef")
+	)
+	(fp_line
+		(start 1.27 11.43)
+		(end -3.81 11.43)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "90c741af-1f13-5715-b41f-0836a2007063")
+	)
+	(fp_line
+		(start -3.81 11.43)
+		(end -3.81 -1.27)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "769b8737-f5cb-51cd-a19f-fecc58635ee8")
+	)
+	(fp_line
+		(start -3.92 -1.38)
+		(end 1.38 -1.38)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "18b5c054-61f6-5934-b917-a6562e38ac5e")
+	)
+	(fp_line
+		(start 1.38 -1.38)
+		(end 1.38 11.54)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "30ef2e16-fc89-5b70-8dda-2b6d3f04c4de")
+	)
+	(fp_line
+		(start 1.38 11.54)
+		(end -3.92 11.54)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "6809725b-1836-56ae-9ecd-b7da61028f13")
+	)
+	(fp_line
+		(start -3.92 11.54)
+		(end -3.92 -1.38)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ee0438e2-ded2-5c76-8da0-b16fa95a174c")
+	)
+	(fp_line
+		(start 1.68 -0.38)
+		(end 1.68 -1.68)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "250caf80-8418-505c-8fea-5521ea873225")
+	)
+	(fp_line
+		(start 1.68 -1.68)
+		(end 0.38 -1.68)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "12d2bb96-1766-5af2-9133-1f3271d5a75c")
+	)
+	(fp_line
+		(start -4.72 -2.18)
+		(end 2.18 -2.18)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "733a0937-5e08-5d5c-a643-a8c997f79caf")
+	)
+	(fp_line
+		(start 2.18 -2.18)
+		(end 2.18 11.93)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f0a92c00-fad2-54f4-b9e5-95d4fa185d47")
+	)
+	(fp_line
+		(start 2.18 11.93)
+		(end -4.72 11.93)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "47eb1b12-c439-5306-8e44-d9d45ea8c988")
+	)
+	(fp_line
+		(start -4.72 11.93)
+		(end -4.72 -2.18)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "6e0aa1c9-cdc2-5781-861b-dfb4bea6a96d")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -1.27 5.08)
+		(layer "F.Fab")
+		(uuid "6fed7e7e-1cc9-5452-b1e4-62c3f2542789")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+)

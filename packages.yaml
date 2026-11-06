@@ -1,0 +1,16 @@
+# Package parameter table for tools/gen_ic.py.
+# RULE: every entry must cite the JEDEC drawing or vendor package / land-pattern
+# document its numbers come from (field `source`) and say what kind of land
+# pattern it is (field `density`, e.g. "manufacturer-recommended"). Values are
+# copied from that document, never estimated. Packages without a fetched source
+# are listed in TODO.md instead of here.
+#
+# Schema (mm):
+#   name, library, family (chip|dual|quad|dip|pads), source, density, descr, tags
+#   chip: pad [x,y], pad_span (centre-centre), body [x,y]
+#   dual: pins, pitch, pad [x,y], pad_span, body [x,y], ep [x,y] (optional)
+#   quad: pins, pitch, pad [toe-heel, width], pad_span [x,y], body [x,y], ep (opt)
+#   dip:  pins, pitch, row_spacing, pad_dia, drill, body [x,y]
+#   pads: pad_list [{num,x,y,w,h}], body [x,y]
+#   courtyard_clearance: 0.25 default; 0.1 only where the cited source allows
+packages: []

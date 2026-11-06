@@ -1,0 +1,1 @@
+Real schematics from the KiCad source tree demos/ (gitlab.com/kicad/code/kicad @ 5ac898839d24), used only as round-trip test fixtures. License: see the KiCad repository.

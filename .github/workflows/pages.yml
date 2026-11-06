@@ -1,0 +1,51 @@
+name: Build libraries and deploy Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install pyyaml pytest
+      - name: Generate + validate libraries
+        run: python tools/build_all.py
+      - name: Python tests
+        run: python -m pytest -q
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: JS tests (parser round trip, down-conversion, schematic model + ERC)
+        run: node --test tests/js/sexpr.test.mjs tests/js/downconvert.test.mjs tests/js/schematic.test.mjs
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r index.html index.json css js kicad-symbols kicad-footprints vendor _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

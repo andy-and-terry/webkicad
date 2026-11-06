@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KiCad Online</title>
+<meta name="description" content="View and edit KiCad projects from any device">
+<!--
+  Config lives in js/app.js:  GH = { user: "andy-and-terry", repo: "webkicad", branch: "main",
+                                     symbolsDir: "kicad-symbols", footprintsDir: "kicad-footprints" }
+  The val.town URL and API key are entered in Settings and stored in this browser's localStorage only.
+-->
+<link rel="stylesheet" href="css/style.css">
+<script type="module" src="https://kicanvas.org/kicanvas/kicanvas.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+</head>
+<body data-pane="projects">
+<header class="top">
+  <h1>KiCad Online</h1>
+  <span id="busy" class="busy" hidden></span>
+  <button id="btn-settings" aria-label="Settings">⚙ Settings</button>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button data-tab="projects" role="tab">Projects</button>
+  <button data-tab="library" role="tab">Library</button>
+  <button data-tab="viewer" role="tab">Viewer</button>
+  <button data-tab="editor" role="tab" id="tab-editor" hidden>Editor</button>
+</nav>
+
+<main>
+  <section id="pane-projects" class="pane side" aria-label="Projects">
+    <div class="toolbar">
+      <button id="btn-new">+ New</button>
+      <button id="btn-upload">Upload…</button>
+      <button id="btn-refresh" aria-label="Refresh">↻</button>
+    </div>
+    <div id="projects"></div>
+  </section>
+
+  <section id="pane-library" class="pane side" aria-label="Library">
+    <div class="toolbar">
+      <input id="lib-q" type="search" placeholder="Search symbols & footprints" autocomplete="off" aria-label="Search library">
+    </div>
+    <div class="toolbar filters">
+      <select id="lib-type" aria-label="Type"><option value="">All</option><option value="sym">Symbols</option><option value="fp">Footprints</option></select>
+      <select id="lib-src" aria-label="Source"><option value="">Any source</option><option value="gen">Generated</option><option value="kicad">Official KiCad</option></select>
+      <span id="lib-count" class="meta"></span>
+    </div>
+    <div id="lib-results"><p class="empty">Loading index…</p></div>
+  </section>
+
+  <section id="pane-viewer" class="pane main" aria-label="Viewer">
+    <div class="viewer-head"><b id="viewer-title">Nothing open</b><div id="viewer-info"></div></div>
+    <div id="viewer"><div class="placeholder">Open a project file or a library item.</div></div>
+  </section>
+
+  <section id="pane-editor" class="pane main" aria-label="Schematic editor"></section>
+</main>
+
+<dialog id="settings">
+  <form id="settings-form" method="dialog">
+    <h2>Storage settings</h2>
+    <label>val.town URL <input id="set-url" type="url" placeholder="https://you--kicad.web.val.run" required></label>
+    <label>API key (KICAD_KEY) <input id="set-key" type="password" autocomplete="off" required></label>
+    <p class="meta">Saved in this browser only (localStorage). Never committed anywhere.</p>
+    <p id="set-msg" class="meta" role="status"></p>
+    <div class="actions"><button type="button" id="set-cancel">Cancel</button><button type="submit">Save &amp; test</button></div>
+  </form>
+</dialog>
+
+<div id="toasts" aria-live="polite"></div>
+<script type="module">
+  import { boot } from "./js/app.js";
+  boot();
+</script>
+</body>
+</html>
