@@ -87,11 +87,21 @@ def power_symbol(net, ground=False):
     return symbol(net, props, {(0, 1): body, (1, 1): [pin]}, power=True, pin_numbers_hide=True, pin_name_offset=0, pin_names_hide=True)
 
 
+def pwr_flag():
+    body = [sym_poly([(0, 0), (0, 1.27), (-1.016, 1.905), (0, 2.54), (1.016, 1.905), (0, 1.27)], "none", 0)]
+    pin = sym_pin("power_out", 0, 0, 90, 0, "~", 1)
+    props = [("Reference", "#FLG", 0, 1.905, 0, True, None), ("Value", "PWR_FLAG", 0, 3.81, 0, False, None),
+             ("Footprint", "", 0, 0, 0, True, None), ("Datasheet", "~", 0, 0, 0, True, None),
+             ("Description", "Special symbol for telling ERC where power comes from", 0, 0, 0, True, None),
+             ("ki_keywords", "flag power", 0, 0, 0, True, None)]
+    return symbol("PWR_FLAG", props, {(0, 1): body, (1, 1): [pin]}, power=True, pin_numbers_hide=True, pin_name_offset=0, pin_names_hide=True)
+
+
 def main():
     a = write_symlib(os.path.join(SYMDIR, "Gen_Device.kicad_sym"), device_symbols())
-    pw = [power_symbol("GND", True)] + [power_symbol(n) for n in ("VCC", "+3V3", "+5V", "+12V")]
+    pw = [power_symbol("GND", True)] + [power_symbol(n) for n in ("VCC", "+3V3", "+5V", "+12V")] + [pwr_flag()]
     b = write_symlib(os.path.join(SYMDIR, "Gen_power.kicad_sym"), pw)
-    print("gen_passives: 6 device symbols, 5 power symbols")
+    print("gen_passives: 6 device symbols, 6 power symbols")
     return [a, b]
 
 
