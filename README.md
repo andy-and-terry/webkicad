@@ -78,6 +78,83 @@ Validation rules:
 - **Footprints:** pads are unique and contiguous, pad 1 is marked, the courtyard is ≥0.25 mm from pads (0.1 mm only via `CourtyardClearance`), silkscreen does not overlap pads, and units are plausible mm.
 - **Symbols:** pin numbers are unique, pins don't overlap, pins are on the 1.27 mm grid, and the `Footprint` field resolves to a real footprint.
 
+## ERC
+
+```bash
+python tools/erc.py path/to/file.kicad_sch   # or a directory
+```
+
+This runs `tools/ercheck.jar` and prints every error and warning verbatim. It exits 1 if any error remains.
+
+**Known false positive (filtered, still printed as `FILTERED`):** `<REF>: duplicate reference designator (N uses)`. It is filtered only when the N symbols with that reference share one `lib_id` and have N distinct unit numbers, i.e. the units of one multi-unit part, which KiCad requires to share a reference. All 58 such reports in the library preview schematics were checked this way:
+
+<details><summary>58 multi-unit symbols (Device library)</summary>
+
+- `Device:D_Dual_CommonAnode_AKK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_CommonAnode_KAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_CommonAnode_KKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_CommonCathode_AAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_CommonCathode_AKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_CommonCathode_KAA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_ACK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_AKC_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_CAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_CKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_KAC_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Dual_Series_KCA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonAnode_AKK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonAnode_KAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonAnode_KKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonCathode_AAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonCathode_AKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_CommonCathode_KAA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_ACK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_AKC_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_CAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_CKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_KAC_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Schottky_Dual_Series_KCA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonAnode_AKK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonAnode_KAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonAnode_KKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonCathode_AAK_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonCathode_AKA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:D_Zener_Dual_CommonCathode_KAA_Split: D1: duplicate reference designator (2 uses)`
+- `Device:R_Network03_Split: RN1: duplicate reference designator (3 uses)`
+- `Device:R_Network04_Split: RN1: duplicate reference designator (4 uses)`
+- `Device:R_Network05_Split: RN1: duplicate reference designator (5 uses)`
+- `Device:R_Network06_Split: RN1: duplicate reference designator (6 uses)`
+- `Device:R_Network07_Split: RN1: duplicate reference designator (7 uses)`
+- `Device:R_Network08_Split: RN1: duplicate reference designator (8 uses)`
+- `Device:R_Network09_Split: RN1: duplicate reference designator (9 uses)`
+- `Device:R_Network10_Split: RN1: duplicate reference designator (10 uses)`
+- `Device:R_Network11_Split: RN1: duplicate reference designator (11 uses)`
+- `Device:R_Network12_Split: RN1: duplicate reference designator (12 uses)`
+- `Device:R_Network13_Split: RN1: duplicate reference designator (13 uses)`
+- `Device:R_Pack02_SIP_Split: RN1: duplicate reference designator (2 uses)`
+- `Device:R_Pack02_Split: RN1: duplicate reference designator (2 uses)`
+- `Device:R_Pack03_SIP_Split: RN1: duplicate reference designator (3 uses)`
+- `Device:R_Pack03_Split: RN1: duplicate reference designator (3 uses)`
+- `Device:R_Pack04_SIP_Split: RN1: duplicate reference designator (4 uses)`
+- `Device:R_Pack04_Split: RN1: duplicate reference designator (4 uses)`
+- `Device:R_Pack05_SIP_Split: RN1: duplicate reference designator (5 uses)`
+- `Device:R_Pack05_Split: RN1: duplicate reference designator (5 uses)`
+- `Device:R_Pack06_SIP_Split: RN1: duplicate reference designator (6 uses)`
+- `Device:R_Pack06_Split: RN1: duplicate reference designator (6 uses)`
+- `Device:R_Pack07_SIP_Split: RN1: duplicate reference designator (7 uses)`
+- `Device:R_Pack07_Split: RN1: duplicate reference designator (7 uses)`
+- `Device:R_Pack08_Split: RN1: duplicate reference designator (8 uses)`
+- `Device:R_Pack09_Split: RN1: duplicate reference designator (9 uses)`
+- `Device:R_Pack10_Split: RN1: duplicate reference designator (10 uses)`
+- `Device:R_Pack11_Split: RN1: duplicate reference designator (11 uses)`
+- `Device:R_Potentiometer_Dual_Separate: RV1: duplicate reference designator (2 uses)`
+
+</details>
+
+The library previews also give 963 warnings, which are expected and left in the report:
+- 902× `no Footprint assigned`: generic official symbols ship with an empty footprint field.
+- 59× `input pin not driven` and 2× `power input not driven`: pins that carry a no-connect flag in the preview.
+
 ## Adding a part from a datasheet
 
 Rule: pinouts and land patterns come **only** from the datasheet you provide, never from memory.
